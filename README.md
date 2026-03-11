@@ -174,24 +174,25 @@ This repository is a modified fork of the original [L2CS-Net](https://github.com
 
 **1. Run Optimized Inference (with Adaptive Scaling)**
 By default, the script now runs with the adaptive scaling module enabled for smooth performance:
-```bash
-  python inference.py --video-path video.mp4
-****2. Benchmark Original Hardware Speed (Disable Scaling)
+```
+   python inference.py --video-path video.mp4
+```
+**2. Benchmark Original Hardware Speed (Disable Scaling)
 To test the raw processing power of your machine without our optimization (Warning: Can be very slow on 4K videos):** 
-**
-Bash
+```
 python inference.py --video-path video.mp4 --disable-scaling
+```
 **3. Collect Custom Dataset (Manual Annotation)
 Run this tool to capture webcam frames and manually label them for your own private dataset:**
-
-Bash
+```
 python collect_data.py
+```
 **# Look at the screen and press '0' (Normal)
 # Look away and press '1' (Cheating)
 # Press 'q' to quit. Images are saved in the /dataset folder.
-4. Evaluate Model on Private Dataset
-Once you have your _0.png and _1.png dataset, evaluate the classification threshold:
-**
-Bash
+**4. Evaluate Model on Private Dataset
+Once you have your _0.png and _1.png dataset, evaluate the classification threshold:**
+``
 python evaluate.py
+``
 Note: You can adjust the threshold variable inside evaluate.py to calibrate the sensitivity of the cheating detection.
