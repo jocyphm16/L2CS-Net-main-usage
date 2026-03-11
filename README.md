@@ -186,10 +186,11 @@ python inference.py --video-path video.mp4 --disable-scaling
 Run this tool to capture webcam frames and manually label them for your own private dataset:**
 ```
 python collect_data.py
-```
+
 **Look at the screen and press '0' (Normal)
 Look away and press '1' (Cheating)
 Press 'q' to quit. Images are saved in the /dataset folder.**
+```
 **4. Evaluate Model on Private Dataset
 Once you have your _0.png and _1.png dataset, evaluate the classification threshold:**
 ``
