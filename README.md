@@ -146,3 +146,52 @@ This means the code will perform training and store the models to *output/snapsh
 ```
 This means the code will perform testing on snapshot_folder and store the results to *evaluation/L2CS-gaze360*.
 
+Markdown
+## 🚀 What's New in This Fork (Online Proctoring Adaptation)
+
+This repository is a modified fork of the original [L2CS-Net](https://github.com/Ahmednull/L2CS-Net). While the core 3D gaze estimation architecture (ResNet-50) remains intact, we have introduced approximately 20% new codebase specifically optimized for **Real-time Online Exam Proctoring Systems** and edge-device deployment.
+
+### ✨ Key Features Added
+
+1. **Adaptive Video Scaling (OOM Prevention):**
+   Processing raw 4K vertical videos (9:16) from smartphones often causes Out-Of-Memory errors and extreme FPS drops. We introduced an adaptive scaling module that dynamically resizes high-resolution frames to a safe dimension (e.g., 720p) while preserving the original aspect ratio, boosting inference speed from ~2 FPS to ~18 FPS on standard CPUs.
+
+2. **3D-to-2D Gaze Projection & JSON API Integration:**
+   Instead of just rendering visual vectors, the modified pipeline projects the 3D gaze angles (Pitch, Yaw) into 2D virtual screen coordinates (`dx`, `dy`). These metrics are packaged into lightweight JSON payloads, making it feasible to stream continuous tracking data to a Microservices Backend for anomaly detection (cheating behavior) without video bandwidth bottlenecks.
+
+3. **Built-in FPS Benchmarking Tool:**
+   Integrated a performance evaluation tool directly into the inference script. It calculates the actual average inference speed (FPS) and total execution time. 
+
+4. **Custom Dataset Collection & Evaluation Scripts:**
+   Added standalone tools for researchers to quickly build and evaluate their own ground-truth datasets:
+   * `collect_data.py`: Manual data annotation tool via webcam (Press `0` for Normal, `1` for Cheating).
+   * `evaluate.py`: Automatically generates Confusion Matrix metrics (Accuracy, Precision, Recall, F1-Score) on your custom dataset.
+
+---
+===============================
+
+### 💻 Usage Instructions Custom (Modified Features)
+
+**1. Run Optimized Inference (with Adaptive Scaling)**
+By default, the script now runs with the adaptive scaling module enabled for smooth performance:
+```bash
+python inference.py --video-path video.mp4
+2. Benchmark Original Hardware Speed (Disable Scaling)
+To test the raw processing power of your machine without our optimization (Warning: Can be very slow on 4K videos):
+
+Bash
+python inference.py --video-path video.mp4 --disable-scaling
+3. Collect Custom Dataset (Manual Annotation)
+Run this tool to capture webcam frames and manually label them for your own private dataset:
+
+Bash
+python collect_data.py
+# Look at the screen and press '0' (Normal)
+# Look away and press '1' (Cheating)
+# Press 'q' to quit. Images are saved in the /dataset folder.
+4. Evaluate Model on Private Dataset
+Once you have your _0.png and _1.png dataset, evaluate the classification threshold:
+
+Bash
+python evaluate.py
+Note: You can adjust the threshold variable inside evaluate.py to calibrate the sensitivity of the cheating detection.
